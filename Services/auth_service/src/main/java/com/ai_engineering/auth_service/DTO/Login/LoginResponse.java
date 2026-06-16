@@ -2,14 +2,20 @@ package com.ai_engineering.auth_service.DTO.Login;
 
 import org.springframework.stereotype.Component;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Component
+@Builder
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginResponse {
-    private Long id;
+    private Long userId;
     private String userName;
     private String email;
+    private String role;
+    private String token;
 }
