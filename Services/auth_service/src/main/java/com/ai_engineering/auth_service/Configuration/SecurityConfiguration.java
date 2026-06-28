@@ -23,8 +23,8 @@ public class SecurityConfiguration {
         SecurityFilterChain filter = http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(
                 auth -> auth
-                    .requestMatchers("/auth/**").permitAll()
-                    .anyRequest().authenticated()
+                .requestMatchers("/auth/**","/actuator/health").permitAll()
+                .anyRequest().authenticated()
             )
             .build();
         return filter;
