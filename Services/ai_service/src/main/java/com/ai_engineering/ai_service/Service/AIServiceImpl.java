@@ -1,29 +1,45 @@
 package com.ai_engineering.ai_service.Service;
 
-import org.springframework.ai.chat.client.ChatClient;
+import java.io.IOException;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.ai_engineering.ai_service.DTOs.ChatDTO.ChatRequest;
 import com.ai_engineering.ai_service.DTOs.ChatDTO.ChatResponse;
+import com.ai_engineering.ai_service.Engine.AIEngineImpl;
+import com.ai_engineering.ai_service.Engine.Prompts.PromptType;
 
 @Service
 public class AIServiceImpl implements AIService {
 
-    private final  ChatClient chatClient;
+    private final AIEngineImpl engine;
 
-    AIServiceImpl(ChatClient chatClient) {
-        this.chatClient = chatClient;
+    AIServiceImpl(AIEngineImpl engine) {
+        this.engine = engine;
     }
 
     @Override
-    public ChatResponse chat(ChatRequest req) {
+    public ChatResponse chat(ChatRequest req) throws IOException{
         return new ChatResponse(
-            chatClient
-                .prompt(req.request())
-                .system("You are a senior java Engineer")
-                .call()
-                .content()
+            engine.generate(
+                PromptType.CHAT, 
+                Map.of(
+                    "question",req.request()
+                ),
+                String.class)
         );
     }
+
+    // @Override
+    // public CodeReviewResponse codeReview(CodeReviewRequest req) {
+    //     String response =  chatClient
+    //             .prompt()
+    //             .call()
+    //             .content();
+    //     return new CodeReviewResponse(response, null, null);
+    // }
+
+    
     
 }
