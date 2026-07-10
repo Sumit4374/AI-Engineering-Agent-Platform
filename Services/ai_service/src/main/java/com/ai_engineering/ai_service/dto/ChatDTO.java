@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.DTOs;
+package com.ai_engineering.ai_service.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

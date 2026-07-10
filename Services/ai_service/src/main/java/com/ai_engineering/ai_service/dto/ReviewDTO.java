@@ -1,8 +1,8 @@
-package com.ai_engineering.ai_service.DTOs;
+package com.ai_engineering.ai_service.dto;
 
 import java.util.List;
 
-import com.ai_engineering.ai_service.Model.Enums.Complexity;
+import com.ai_engineering.ai_service.model.enums.Complexity;
 
 import jakarta.validation.constraints.NotBlank;
 

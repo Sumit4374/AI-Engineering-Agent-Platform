@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.Engine.Prompts;
+package com.ai_engineering.ai_service.prompt;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class PromptLoader {
     
     public String load(String filename) throws IOException{
-        ClassPathResource resource = new ClassPathResource("Prompts/"+filename);
+        ClassPathResource resource = new ClassPathResource("prompts/"+filename+".prompt");
         return new String(resource.getInputStream().readAllBytes());
     }
 }

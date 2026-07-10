@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.Engine.Prompts;
+package com.ai_engineering.ai_service.prompt;
 
 public enum PromptType {
     CHAT,
@@ -6,5 +6,6 @@ public enum PromptType {
     DEBUG,
     DOCUMENTATION,
     ARCHITECTURE,
-    SUMMARIZATION
+    SUMMARIZATION,
+    EXPLAIN
 }

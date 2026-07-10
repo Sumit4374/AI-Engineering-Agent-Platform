@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.Model.Enums;
+package com.ai_engineering.ai_service.model.enums;
 
 public enum Complexity {
     LOW,

@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.Config;
+package com.ai_engineering.ai_service.config;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
