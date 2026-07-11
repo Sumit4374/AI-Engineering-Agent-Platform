@@ -13,21 +13,24 @@ import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
 import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeResponse;
 import com.ai_engineering.ai_service.engine.AIEngineImpl;
 import com.ai_engineering.ai_service.prompt.PromptType;
+import com.ai_engineering.ai_service.prompt.SummaryTypeLoader;
 
 @Service
 public class AIServiceImpl implements AIService {
 
     private final AIEngineImpl engine;
+    private final SummaryTypeLoader summaryTypeLoader;
 
-    AIServiceImpl(AIEngineImpl engine) {
+    AIServiceImpl(AIEngineImpl engine, SummaryTypeLoader summaryTypeLoader) {
         this.engine = engine;
+        this.summaryTypeLoader = summaryTypeLoader;
     }
 
     @Override
     public ChatResponse chat(ChatRequest req) throws IOException{
         return new ChatResponse(
             engine.generate(
-                PromptType.CHAT, 
+                PromptType.CHAT.getFileName(), 
                 Map.of(
                     "question",req.request()
                 )
@@ -38,7 +41,7 @@ public class AIServiceImpl implements AIService {
     @Override
     public ExplainResponse explain(ExplainRequest req) throws IOException {
         return new ExplainResponse(
-            engine.generate(PromptType.EXPLAIN, 
+            engine.generate(PromptType.EXPLAIN.getFileName(), 
                 Map.of(
                     "topic",req.topic()
                 )
@@ -49,9 +52,9 @@ public class AIServiceImpl implements AIService {
     @Override
     public SummarizeResponse summarize(SummarizeRequest req) throws IOException {
         return engine.generateStructure(
-                PromptType.SUMMARIZATION, 
+                summaryTypeLoader.loadSummaryType(req.type()), 
                 Map.of(
-                    "content",req.content()
+                    "text",req.text()
                 ), 
         SummarizeResponse.class);
     }

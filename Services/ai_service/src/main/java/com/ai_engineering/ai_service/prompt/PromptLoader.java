@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class PromptLoader {
     
     public String load(String filename) throws IOException{
-        ClassPathResource resource = new ClassPathResource("prompts/"+filename+".prompt");
+        ClassPathResource resource = new ClassPathResource("prompts/"+filename);
         return new String(resource.getInputStream().readAllBytes());
     }
 }

@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 public class SummarizeDTO {
     public record SummarizeRequest(
         @NotBlank(message = "Content cannot be empty")
-        String content,
+        String text,
         SummaryType type
     ){}
 
