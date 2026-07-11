@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
+import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
+import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewResponse;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainRequest;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainResponse;
 import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
@@ -33,10 +35,10 @@ public class AIController {
         return ResponseEntity.ok(aiService.chat(request));
     }
 
-    // @PostMapping("/review")
-    // public ResponseEntity<CodeReviewResponse> codeReview(@RequestBody CodeReviewRequest req) {
-    //     return ResponseEntity.ok(aiService.codeReview(req));
-    // }
+    @PostMapping("/review")
+    public ResponseEntity<CodeReviewResponse> codeReview(@RequestBody CodeReviewRequest req) throws IOException {
+        return ResponseEntity.ok(aiService.codeReview(req));
+    }
     
    @PostMapping("/explain")
    public ResponseEntity<ExplainResponse> explainResponse(@Valid @RequestBody ExplainRequest req) throws IOException {

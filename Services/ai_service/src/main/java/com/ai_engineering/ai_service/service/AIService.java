@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
+import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
+import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewResponse;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainRequest;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainResponse;
 import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
@@ -13,6 +15,6 @@ import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeResponse;
 public interface AIService {
     ChatResponse chat(ChatRequest req) throws IOException;
     ExplainResponse explain(ExplainRequest req) throws IOException;
-    // CodeReviewResponse codeReview(CodeReviewRequest req);
+    CodeReviewResponse codeReview(CodeReviewRequest req) throws IOException;
     SummarizeResponse summarize(SummarizeRequest req) throws IOException;
 }

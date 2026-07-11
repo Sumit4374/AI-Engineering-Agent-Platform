@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
+import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
+import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewResponse;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainRequest;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainResponse;
 import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
@@ -59,17 +61,14 @@ public class AIServiceImpl implements AIService {
         SummarizeResponse.class);
     }
 
-   
+    @Override
+    public CodeReviewResponse codeReview(CodeReviewRequest req) throws IOException {
+        return engine.generateStructure(
+            PromptType.CODE_REVIEW.getFileName(),
+            Map.of(
+                "code",req.code()
+            ), CodeReviewResponse.class);
+    }
 
-    // @Override
-    // public CodeReviewResponse codeReview(CodeReviewRequest req) {
-    //     String response =  chatClient
-    //             .prompt()
-    //             .call()
-    //             .content();
-    //     return new CodeReviewResponse(response, null, null);
-    // }
-
-    
     
 }
