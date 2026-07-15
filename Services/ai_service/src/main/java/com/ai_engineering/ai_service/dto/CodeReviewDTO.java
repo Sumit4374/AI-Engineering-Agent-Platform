@@ -2,8 +2,6 @@ package com.ai_engineering.ai_service.dto;
 
 import java.util.List;
 
-import javax.print.attribute.standard.Severity;
-
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -28,6 +26,12 @@ public class CodeReviewDTO {
         int security
     ){}
 
+    public enum Severity {
+        LOW,
+        MEDIUM,
+        HIGH,
+        CRITICAL
+    }
     public record ReviewIssues(
         Severity severity,
         String title,

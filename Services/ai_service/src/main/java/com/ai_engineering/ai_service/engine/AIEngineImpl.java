@@ -22,6 +22,7 @@ public class AIEngineImpl implements AIEngine {
     @Override
     public <T> T generateStructure(String promptType, Map<String, Object> variables, Class<T> responseType) throws IOException {
         String prompt = promptRegistry.loadPrompt(promptType, variables);
+        System.out.println(prompt);
         return chatClient
         .prompt(prompt)
         .call()
