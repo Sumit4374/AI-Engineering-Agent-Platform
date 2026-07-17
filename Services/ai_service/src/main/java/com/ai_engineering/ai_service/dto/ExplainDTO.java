@@ -7,6 +7,7 @@ public class ExplainDTO {
         String explaination
     ){}
     public record ExplainRequest(
+        String conversationId,
         @NotBlank(message = "No topic to explain")
         String topic
     ){}

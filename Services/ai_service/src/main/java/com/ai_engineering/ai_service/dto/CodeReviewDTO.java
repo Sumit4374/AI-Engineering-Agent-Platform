@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 public class CodeReviewDTO {
 
     public record CodeReviewRequest(
+        String conversationId,
         @NotBlank(message = "Code input is expected")
         String code
     ){}

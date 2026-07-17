@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 
 import com.ai_engineering.ai_service.prompt.PromptLoader;
@@ -20,21 +21,27 @@ public class AIEngineImpl implements AIEngine {
     }
 
     @Override
-    public <T> T generateStructure(String promptType, Map<String, Object> variables, Class<T> responseType) throws IOException {
+    public <T> T generateStructure(String conversationId,String promptType, Map<String, Object> variables, Class<T> responseType) throws IOException {
         String prompt = promptRegistry.loadPrompt(promptType, variables);
         System.out.println(prompt);
         return chatClient
         .prompt(prompt)
+        .advisors(
+            a -> a.param(ChatMemory.CONVERSATION_ID, conversationId)
+        )
         .call()
         .entity(responseType);
     }
 
     @Override
-    public String generate(String promptType, Map<String, Object> variables) throws IOException {
+    public String generate(String conversationId,String promptType, Map<String, Object> variables) throws IOException {
         String prompt = promptRegistry.loadPrompt(promptType, variables);
         System.out.println(prompt);
         return chatClient
         .prompt(prompt)
+        .advisors(
+            a -> a.param(ChatMemory.CONVERSATION_ID, conversationId)
+        )
         .call()
         .content();
     }    

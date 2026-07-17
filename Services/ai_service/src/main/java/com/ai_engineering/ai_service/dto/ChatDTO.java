@@ -6,6 +6,7 @@ public class ChatDTO {
 
     
     public record ChatRequest(
+        String conversationId,
         @NotBlank(message = "Request should not be empty")
         String request
     ){}

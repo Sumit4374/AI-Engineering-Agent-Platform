@@ -2,6 +2,7 @@ package com.ai_engineering.ai_service.service;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -28,10 +29,18 @@ public class AIServiceImpl implements AIService {
         this.summaryTypeLoader = summaryTypeLoader;
     }
 
+    private String getConversationId(String conversationId){
+        if(conversationId==null || conversationId.isBlank()){
+            return UUID.randomUUID().toString();
+        }
+        return conversationId;
+    }
+
     @Override
     public ChatResponse chat(ChatRequest req) throws IOException{
         return new ChatResponse(
             engine.generate(
+                getConversationId(req.conversationId()),
                 PromptType.CHAT.getFileName(), 
                 Map.of(
                     "question",req.request()
@@ -43,7 +52,9 @@ public class AIServiceImpl implements AIService {
     @Override
     public ExplainResponse explain(ExplainRequest req) throws IOException {
         return new ExplainResponse(
-            engine.generate(PromptType.EXPLAIN.getFileName(), 
+            engine.generate(
+                getConversationId(req.conversationId()),
+                PromptType.EXPLAIN.getFileName(), 
                 Map.of(
                     "topic",req.topic()
                 )
@@ -54,6 +65,7 @@ public class AIServiceImpl implements AIService {
     @Override
     public SummarizeResponse summarize(SummarizeRequest req) throws IOException {
         return engine.generateStructure(
+                getConversationId(req.conversationId()),
                 summaryTypeLoader.loadSummaryType(req.type()), 
                 Map.of(
                     "text",req.text()
@@ -64,6 +76,7 @@ public class AIServiceImpl implements AIService {
     @Override
     public CodeReviewResponse codeReview(CodeReviewRequest req) throws IOException {
         return engine.generateStructure(
+            getConversationId(req.conversationId()),
             PromptType.CODE_REVIEW.getFileName(),
             Map.of(
                 "code",req.code()

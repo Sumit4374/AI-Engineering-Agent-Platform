@@ -7,11 +7,13 @@ import java.util.Map;
 public interface AIEngine {
 
     String generate(
+        String conversationId,
         String promptType,
         Map<String, Object> variables
     ) throws IOException;
 
     <T> T generateStructure(
+        String conversationId,
         String promptType,
         Map<String, Object> variables,
         Class<T> responseType
