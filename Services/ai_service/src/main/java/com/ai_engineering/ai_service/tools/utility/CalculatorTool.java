@@ -4,9 +4,12 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
+import com.ai_engineering.ai_service.tools.AiTool;
+import com.ai_engineering.ai_service.tools.model.ToolsCategory;
+
 @Component
-public class CalculatorTool {
-    
+public class CalculatorTool implements AiTool {
+
     @Tool(description = "Adds two double numbers together and returns the sum")
     public double add(
         @ToolParam(description = "number one in datatype double") double a,
@@ -40,5 +43,10 @@ public class CalculatorTool {
             throw new IllegalArgumentException("Division By Zero");
         }
         return a/b;
+    }
+
+    @Override
+    public ToolsCategory category() {
+        return ToolsCategory.UTILITY;
     }
 }

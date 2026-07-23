@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class ExplainDTO {
     public record ExplainResponse(
-        String explaination
+        String explanation
     ){}
     public record ExplainRequest(
         String conversationId,

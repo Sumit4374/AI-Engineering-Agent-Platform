@@ -31,12 +31,12 @@ public class AIController {
     }
 
     @PostMapping("/chat")
-    public ResponseEntity<ChatResponse> ChatResponse(@Valid @RequestBody ChatRequest request) throws IOException{
+    public ResponseEntity<ChatResponse> chat(@Valid @RequestBody ChatRequest request) throws IOException{
         return ResponseEntity.ok(aiService.chat(request));
     }
 
     @PostMapping("/review")
-    public ResponseEntity<CodeReviewResponse> codeReview(@RequestBody CodeReviewRequest req) throws IOException {
+    public ResponseEntity<CodeReviewResponse> codeReview(@Valid @RequestBody CodeReviewRequest req) throws IOException {
         return ResponseEntity.ok(aiService.codeReview(req));
     }
     

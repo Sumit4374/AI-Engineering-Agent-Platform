@@ -3,11 +3,11 @@ package com.ai_engineering.ai_service.prompt;
 public enum PromptType {
     CHAT("CHAT.prompt"),
     CODE_REVIEW("CODE_REVIEW.prompt"),
-    DEBUG(""),
-    DOCUMENTATION(""),
-    ARCHITECTURE(""),
-    SUMMARIZATION(""),
-    EXPLAIN("EXPLAIN.prompt"),;
+    DEBUG("DEBUG.prompt"),
+    DOCUMENTATION("DOCUMENTATION.prompt"),
+    ARCHITECTURE("ARCHITECTURE.prompt"),
+    SUMMARIZATION("SUMMARIZATION.prompt"),
+    EXPLAIN("EXPLAIN.prompt");
     
     private final String fileName;
 

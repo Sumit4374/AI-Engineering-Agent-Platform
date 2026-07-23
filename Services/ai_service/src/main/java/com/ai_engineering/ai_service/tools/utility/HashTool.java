@@ -9,10 +9,12 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
+import com.ai_engineering.ai_service.tools.AiTool;
 import com.ai_engineering.ai_service.tools.model.HashAlgorithm;
+import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
 @Component
-public class HashTool {
+public class HashTool implements AiTool {
     
     @Tool(description = "Compute the hexadecimal hash of the given input using the specified algorithm")
     public String hash(
@@ -30,5 +32,10 @@ public class HashTool {
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public ToolsCategory category() {
+        return ToolsCategory.UTILITY;
     }
 }

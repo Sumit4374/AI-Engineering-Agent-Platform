@@ -4,11 +4,13 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
+import com.ai_engineering.ai_service.tools.AiTool;
+import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
-public class JsonFormatter {
+public class JsonFormatter implements AiTool {
     
     private final ObjectMapper objectMapper;
 
@@ -44,5 +46,10 @@ public class JsonFormatter {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public ToolsCategory category() {
+        return ToolsCategory.UTILITY;
     }
 }

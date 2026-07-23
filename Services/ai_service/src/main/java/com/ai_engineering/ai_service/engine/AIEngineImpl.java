@@ -3,46 +3,58 @@ package com.ai_engineering.ai_service.engine;
 import java.io.IOException;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 
-import com.ai_engineering.ai_service.prompt.PromptLoader;
 import com.ai_engineering.ai_service.prompt.PromptRegistry;
+import com.ai_engineering.ai_service.tools.ToolRegistry;
+import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
 @Service
 public class AIEngineImpl implements AIEngine {
 
+    private static final Logger log = LoggerFactory.getLogger(AIEngineImpl.class);
+
     private final ChatClient chatClient;
     private final PromptRegistry promptRegistry;
-    public AIEngineImpl(PromptLoader promptLoader, ChatClient chatClient, PromptRegistry promptRegistry){
+    private final ToolRegistry toolRegistry;
+
+    public AIEngineImpl(ChatClient chatClient, PromptRegistry promptRegistry, ToolRegistry toolRegistry){
         this.chatClient = chatClient;
         this.promptRegistry = promptRegistry;
+        this.toolRegistry = toolRegistry;
     }
 
     @Override
-    public <T> T generateStructure(String conversationId,String promptType, Map<String, Object> variables, Class<T> responseType) throws IOException {
+    public <T> T generateStructure(String conversationId, String promptType, Map<String, Object> variables,
+            Class<T> responseType, ToolsCategory... tools) throws IOException {
         String prompt = promptRegistry.loadPrompt(promptType, variables);
-        System.out.println(prompt);
+        log.debug("Structured generation [conversationId={}, promptType={}]", conversationId, promptType);
         return chatClient
-        .prompt(prompt)
-        .advisors(
-            a -> a.param(ChatMemory.CONVERSATION_ID, conversationId)
-        )
-        .call()
-        .entity(responseType);
+            .prompt(prompt)
+            .tools(toolRegistry.getTools(tools))
+            .advisors(
+                a -> a.param(ChatMemory.CONVERSATION_ID, conversationId)
+            )
+            .call()
+            .entity(responseType);
     }
 
     @Override
-    public String generate(String conversationId,String promptType, Map<String, Object> variables) throws IOException {
+    public String generate(String conversationId, String promptType, Map<String, Object> variables,
+            ToolsCategory... tools) throws IOException {
         String prompt = promptRegistry.loadPrompt(promptType, variables);
-        System.out.println(prompt);
+        log.debug("Text generation [conversationId={}, promptType={}]", conversationId, promptType);
         return chatClient
-        .prompt(prompt)
-        .advisors(
-            a -> a.param(ChatMemory.CONVERSATION_ID, conversationId)
-        )
-        .call()
-        .content();
-    }    
+            .prompt(prompt)
+            .tools(toolRegistry.getTools(tools))
+            .advisors(
+                a -> a.param(ChatMemory.CONVERSATION_ID, conversationId)
+            )
+            .call()
+            .content();
+    }
 }

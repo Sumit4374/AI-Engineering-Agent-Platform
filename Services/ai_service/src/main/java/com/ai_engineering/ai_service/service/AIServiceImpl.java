@@ -14,17 +14,18 @@ import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainRequest;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainResponse;
 import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
 import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeResponse;
-import com.ai_engineering.ai_service.engine.AIEngineImpl;
+import com.ai_engineering.ai_service.engine.AIEngine;
 import com.ai_engineering.ai_service.prompt.PromptType;
 import com.ai_engineering.ai_service.prompt.SummaryTypeLoader;
+import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
 @Service
 public class AIServiceImpl implements AIService {
 
-    private final AIEngineImpl engine;
+    private final AIEngine engine;
     private final SummaryTypeLoader summaryTypeLoader;
 
-    AIServiceImpl(AIEngineImpl engine, SummaryTypeLoader summaryTypeLoader) {
+    AIServiceImpl(AIEngine engine, SummaryTypeLoader summaryTypeLoader) {
         this.engine = engine;
         this.summaryTypeLoader = summaryTypeLoader;
     }
@@ -41,10 +42,11 @@ public class AIServiceImpl implements AIService {
         return new ChatResponse(
             engine.generate(
                 getConversationId(req.conversationId()),
-                PromptType.CHAT.getFileName(), 
+                PromptType.CHAT.getFileName(),
                 Map.of(
                     "question",req.request()
-                )
+                ),
+                ToolsCategory.UTILITY, ToolsCategory.DEVELOPMENT, ToolsCategory.DOCUMENTATION
             )
         );
     }
@@ -54,10 +56,11 @@ public class AIServiceImpl implements AIService {
         return new ExplainResponse(
             engine.generate(
                 getConversationId(req.conversationId()),
-                PromptType.EXPLAIN.getFileName(), 
+                PromptType.EXPLAIN.getFileName(),
                 Map.of(
                     "topic",req.topic()
-                )
+                ),
+                ToolsCategory.DOCUMENTATION
             )
         );
     }
@@ -66,11 +69,11 @@ public class AIServiceImpl implements AIService {
     public SummarizeResponse summarize(SummarizeRequest req) throws IOException {
         return engine.generateStructure(
                 getConversationId(req.conversationId()),
-                summaryTypeLoader.loadSummaryType(req.type()), 
+                summaryTypeLoader.loadSummaryType(req.type()),
                 Map.of(
                     "text",req.text()
-                ), 
-        SummarizeResponse.class);
+                ),
+                SummarizeResponse.class);
     }
 
     @Override
@@ -80,8 +83,9 @@ public class AIServiceImpl implements AIService {
             PromptType.CODE_REVIEW.getFileName(),
             Map.of(
                 "code",req.code()
-            ), CodeReviewResponse.class);
+            ),
+            CodeReviewResponse.class,
+            ToolsCategory.DEVELOPMENT);
     }
 
-    
 }
