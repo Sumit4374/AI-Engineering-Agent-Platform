@@ -11,7 +11,6 @@ import com.ai_engineering.auth_service.DTO.Login.LoginRequest;
 import com.ai_engineering.auth_service.DTO.Login.LoginResponse;
 import com.ai_engineering.auth_service.DTO.SignUp.SignUpRequest;
 import com.ai_engineering.auth_service.GlobalExceptionHandling.UserAlreadyExists;
-import com.ai_engineering.auth_service.GlobalExceptionHandling.UserNotFound;
 import com.ai_engineering.auth_service.JWT.JwtService;
 import com.ai_engineering.auth_service.Model.User;
 import com.ai_engineering.auth_service.Repository.UserRepo;
@@ -19,7 +18,7 @@ import com.ai_engineering.auth_service.Repository.UserRepo;
 
 @Service
 public class AuthService {
-    
+
     private final UserRepo repo;
     private final PasswordEncoder encoder;
     private final AuthenticationManager authManager;
@@ -34,42 +33,40 @@ public class AuthService {
 
     public LoginResponse signUp(SignUpRequest request){
         if(repo.existsByEmail(request.getEmail())){
-            throw new UserAlreadyExists("Email Already Exist");
+            throw new UserAlreadyExists("Email Already Exists");
         }
         if(repo.existsByUserName(request.getUserName())){
-            throw new RuntimeException("UserName Already Taken");
+            throw new UserAlreadyExists("UserName Already Taken");
         }
-        try {
-            User newUser = User.builder()
-                            .userName(request.getUserName())
-                            .email(request.getEmail())
-                            .password(
-                                encoder.encode(request.getPassword()).toString()
-                            )
-                            .build();
-            repo.save(newUser);
-            LoginRequest loginRequest = new LoginRequest(request.getEmail(), request.getPassword());
-            return login(loginRequest);
-        } catch (Exception e) {
-            throw new RuntimeException(request.getPassword() + "  ........   " + e.getMessage());
-        }
+
+        User newUser = User.builder()
+                .userName(request.getUserName())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .password(encoder.encode(request.getPassword()))
+                .build();
+        repo.save(newUser);
+
+        CustomUserDetails userDetails = new CustomUserDetails(newUser);
+        return buildResponse(userDetails, jwtService.generateToken(userDetails));
     }
 
     public LoginResponse login(LoginRequest request){
-        if(!repo.existsByEmailOrUserName(request.getLogin(),request.getLogin())){
-            throw new UserNotFound("User Not Found");
-        }
         Authentication authentication = authManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getLogin(), request.getPassword())
         );
-        CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
-        String token = jwtService.generateToken(userDetails);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        return buildResponse(userDetails, jwtService.generateToken(userDetails));
+    }
+
+    private LoginResponse buildResponse(CustomUserDetails userDetails, String token){
         return LoginResponse.builder()
-        .userId(userDetails.getId())
-        .userName(userDetails.getUsername())
-        .email(userDetails.getEmail())
-        .token(token)
-        .build();
+                .userId(userDetails.getId())
+                .userName(userDetails.getUsername())
+                .email(userDetails.getEmail())
+                .role(userDetails.getRole())
+                .token(token)
+                .build();
     }
 
 }

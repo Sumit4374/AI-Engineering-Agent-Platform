@@ -1,13 +1,10 @@
 package com.ai_engineering.auth_service.DTO.Login;
 
-import org.springframework.stereotype.Component;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Component
 @Builder
 @Getter
 @NoArgsConstructor
