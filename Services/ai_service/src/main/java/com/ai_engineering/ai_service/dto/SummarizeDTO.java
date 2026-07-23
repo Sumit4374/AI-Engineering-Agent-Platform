@@ -2,6 +2,7 @@ package com.ai_engineering.ai_service.dto;
 
 import java.util.List;
 
+import com.ai_engineering.ai_service.capability.CapabilityRequest;
 import com.ai_engineering.ai_service.prompt.SummaryType;
 
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +15,7 @@ public class SummarizeDTO {
         String text,
         @NotNull(message = "Summary type is required")
         SummaryType type
-    ){}
+    ) implements CapabilityRequest {}
 
     public record SummarizeResponse(
         String title,

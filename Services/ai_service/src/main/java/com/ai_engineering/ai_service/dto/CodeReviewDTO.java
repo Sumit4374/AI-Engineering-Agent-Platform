@@ -2,6 +2,7 @@ package com.ai_engineering.ai_service.dto;
 
 import java.util.List;
 
+import com.ai_engineering.ai_service.capability.CapabilityRequest;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -11,7 +12,7 @@ public class CodeReviewDTO {
         String conversationId,
         @NotBlank(message = "Code input is expected")
         String code
-    ){}
+    ) implements CapabilityRequest {}
 
     public record CodeReviewResponse(
         ReviewScore score,

@@ -1,91 +1,86 @@
 package com.ai_engineering.ai_service.service;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.ai_engineering.ai_service.capability.CapabilityRegistry;
+import com.ai_engineering.ai_service.capability.CapabilityType;
+import com.ai_engineering.ai_service.dto.ApiExplanationDTO.ApiExplanationRequest;
+import com.ai_engineering.ai_service.dto.ApiExplanationDTO.ApiExplanationResponse;
+import com.ai_engineering.ai_service.dto.ArchitectureDTO.ArchitectureRequest;
+import com.ai_engineering.ai_service.dto.ArchitectureDTO.ArchitectureReviewResponse;
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
 import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
 import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewResponse;
+import com.ai_engineering.ai_service.dto.DebugDTO.DebugRequest;
+import com.ai_engineering.ai_service.dto.DebugDTO.DebugResponse;
+import com.ai_engineering.ai_service.dto.DocumentationDTO.DocumentationRequest;
+import com.ai_engineering.ai_service.dto.DocumentationDTO.DocumentationResponse;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainRequest;
 import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainResponse;
+import com.ai_engineering.ai_service.dto.RequirementDTO.RequirementAnalysisResponse;
+import com.ai_engineering.ai_service.dto.RequirementDTO.RequirementRequest;
 import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
 import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeResponse;
-import com.ai_engineering.ai_service.engine.AIEngine;
-import com.ai_engineering.ai_service.prompt.PromptType;
-import com.ai_engineering.ai_service.prompt.SummaryTypeLoader;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
+/**
+ * Thin facade over the {@link CapabilityRegistry}. Each method maps a typed
+ * request to its {@link CapabilityType}; all execution logic lives in the
+ * capability beans.
+ */
 @Service
 public class AIServiceImpl implements AIService {
 
-    private final AIEngine engine;
-    private final SummaryTypeLoader summaryTypeLoader;
+    private final CapabilityRegistry capabilities;
 
-    AIServiceImpl(AIEngine engine, SummaryTypeLoader summaryTypeLoader) {
-        this.engine = engine;
-        this.summaryTypeLoader = summaryTypeLoader;
-    }
-
-    private String getConversationId(String conversationId){
-        if(conversationId==null || conversationId.isBlank()){
-            return UUID.randomUUID().toString();
-        }
-        return conversationId;
+    AIServiceImpl(CapabilityRegistry capabilities) {
+        this.capabilities = capabilities;
     }
 
     @Override
-    public ChatResponse chat(ChatRequest req) throws IOException{
-        return new ChatResponse(
-            engine.generate(
-                getConversationId(req.conversationId()),
-                PromptType.CHAT.getFileName(),
-                Map.of(
-                    "question",req.request()
-                ),
-                ToolsCategory.UTILITY, ToolsCategory.DEVELOPMENT, ToolsCategory.DOCUMENTATION
-            )
-        );
+    public ChatResponse chat(ChatRequest req) throws IOException {
+        return capabilities.execute(CapabilityType.CHAT, req);
     }
 
     @Override
     public ExplainResponse explain(ExplainRequest req) throws IOException {
-        return new ExplainResponse(
-            engine.generate(
-                getConversationId(req.conversationId()),
-                PromptType.EXPLAIN.getFileName(),
-                Map.of(
-                    "topic",req.topic()
-                ),
-                ToolsCategory.DOCUMENTATION
-            )
-        );
-    }
-
-    @Override
-    public SummarizeResponse summarize(SummarizeRequest req) throws IOException {
-        return engine.generateStructure(
-                getConversationId(req.conversationId()),
-                summaryTypeLoader.loadSummaryType(req.type()),
-                Map.of(
-                    "text",req.text()
-                ),
-                SummarizeResponse.class);
+        return capabilities.execute(CapabilityType.EXPLAIN, req);
     }
 
     @Override
     public CodeReviewResponse codeReview(CodeReviewRequest req) throws IOException {
-        return engine.generateStructure(
-            getConversationId(req.conversationId()),
-            PromptType.CODE_REVIEW.getFileName(),
-            Map.of(
-                "code",req.code()
-            ),
-            CodeReviewResponse.class,
-            ToolsCategory.DEVELOPMENT);
+        return capabilities.execute(CapabilityType.CODE_REVIEW, req);
     }
 
+    @Override
+    public SummarizeResponse summarize(SummarizeRequest req) throws IOException {
+        return capabilities.execute(CapabilityType.SUMMARIZATION, req);
+    }
+
+    @Override
+    public DebugResponse debug(DebugRequest req) throws IOException {
+        return capabilities.execute(CapabilityType.DEBUG, req);
+    }
+
+    @Override
+    public ArchitectureReviewResponse architecture(ArchitectureRequest req) throws IOException {
+        return capabilities.execute(CapabilityType.ARCHITECTURE, req);
+    }
+
+    @Override
+    public DocumentationResponse documentation(DocumentationRequest req) throws IOException {
+        return capabilities.execute(CapabilityType.DOCUMENTATION, req);
+    }
+
+    @Override
+    public RequirementAnalysisResponse requirementAnalysis(RequirementRequest req) throws IOException {
+        return capabilities.execute(CapabilityType.REQUIREMENT_ANALYSIS, req);
+    }
+
+    @Override
+    public ApiExplanationResponse apiExplanation(ApiExplanationRequest req) throws IOException {
+        return capabilities.execute(CapabilityType.API_EXPLANATION, req);
+    }
 }
