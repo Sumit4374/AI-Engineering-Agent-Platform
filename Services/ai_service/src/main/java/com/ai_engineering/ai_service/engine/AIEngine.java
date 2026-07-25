@@ -9,6 +9,7 @@ public interface AIEngine {
 
     String generate(
         String conversationId,
+        String provider,
         String promptType,
         Map<String, Object> variables,
         ToolsCategory... tools
@@ -16,6 +17,7 @@ public interface AIEngine {
 
     <T> T generateStructure(
         String conversationId,
+        String provider,
         String promptType,
         Map<String, Object> variables,
         Class<T> responseType,

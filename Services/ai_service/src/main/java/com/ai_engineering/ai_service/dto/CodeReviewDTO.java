@@ -10,6 +10,7 @@ public class CodeReviewDTO {
 
     public record CodeReviewRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "Code input is expected")
         String code
     ) implements CapabilityRequest {}

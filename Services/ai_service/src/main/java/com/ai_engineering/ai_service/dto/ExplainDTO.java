@@ -10,6 +10,7 @@ public class ExplainDTO {
     ){}
     public record ExplainRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "No topic to explain")
         String topic
     ) implements CapabilityRequest {}

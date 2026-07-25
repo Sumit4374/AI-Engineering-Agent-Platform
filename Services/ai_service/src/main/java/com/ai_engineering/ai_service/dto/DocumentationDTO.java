@@ -10,6 +10,7 @@ public class DocumentationDTO {
 
     public record DocumentationRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "Code to document is required")
         String code
     ) implements CapabilityRequest {}

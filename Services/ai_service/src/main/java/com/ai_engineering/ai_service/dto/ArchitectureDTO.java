@@ -10,6 +10,7 @@ public class ArchitectureDTO {
 
     public record ArchitectureRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "Architecture description or code is required")
         String context
     ) implements CapabilityRequest {}

@@ -8,6 +8,7 @@ public class ApiExplanationDTO {
 
     public record ApiExplanationRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "API definition or code is required")
         String api
     ) implements CapabilityRequest {}

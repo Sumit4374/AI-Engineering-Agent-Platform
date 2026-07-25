@@ -9,6 +9,7 @@ public class ChatDTO {
 
     public record ChatRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "Request should not be empty")
         String request
     ) implements CapabilityRequest {}

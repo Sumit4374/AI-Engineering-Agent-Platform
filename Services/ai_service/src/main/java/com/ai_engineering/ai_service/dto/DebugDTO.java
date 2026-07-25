@@ -10,6 +10,7 @@ public class DebugDTO {
 
     public record DebugRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "Code or error context is required")
         String code,
         String stackTrace

@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 public class SummarizeDTO {
     public record SummarizeRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "Content cannot be empty")
         String text,
         @NotNull(message = "Summary type is required")

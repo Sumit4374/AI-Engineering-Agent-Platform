@@ -1,21 +1,17 @@
 package com.ai_engineering.ai_service.config;
 
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import com.ai_engineering.ai_service.provider.ProviderProperties;
 
+/**
+ * Enables provider configuration binding. Chat clients are no longer defined as
+ * a single bean here — each provider builds its own {@code ChatClient} through
+ * the {@code ProviderFactory}, so the engine can select between providers at
+ * runtime.
+ */
 @Configuration
+@EnableConfigurationProperties(ProviderProperties.class)
 public class AIConfiguration {
-    
-    @Bean
-    ChatClient chatClient(ChatClient.Builder chatClient, ChatMemory chatMemory){
-        return chatClient
-        .defaultAdvisors(
-            MessageChatMemoryAdvisor.builder(chatMemory).build()
-        )
-        .build();
-    }
 }

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -27,6 +28,17 @@ public class GlobalExceptionHandler {
             HttpStatus.BAD_REQUEST, "Validation failed");
         problem.setProperty("errors", errors);
         return problem;
+    }
+
+    // Malformed / unreadable request body (bad JSON, double-encoded body, wrong
+    // Content-Type). This is a client error, so report 400 rather than letting
+    // it fall through to the generic 500 handler.
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ProblemDetail handleUnreadableBody(HttpMessageNotReadableException ex) {
+        log.warn("Malformed request body: {}", ex.getMostSpecificCause().getMessage());
+        return ProblemDetail.forStatusAndDetail(
+            HttpStatus.BAD_REQUEST,
+            "Malformed request body. Send a valid JSON object with Content-Type: application/json.");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

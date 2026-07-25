@@ -39,6 +39,7 @@ public abstract class AbstractStructuredCapability<REQ extends CapabilityRequest
     public RES execute(REQ request) throws IOException {
         return engine.generateStructure(
                 resolveConversationId(request.conversationId()),
+                request.provider(),
                 promptType(),
                 variables(request),
                 responseType(),

@@ -10,6 +10,7 @@ public class RequirementDTO {
 
     public record RequirementRequest(
         String conversationId,
+        String provider,
         @NotBlank(message = "Requirement text is required")
         String text
     ) implements CapabilityRequest {}

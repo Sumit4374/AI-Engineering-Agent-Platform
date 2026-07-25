@@ -39,6 +39,7 @@ public abstract class AbstractTextCapability<REQ extends CapabilityRequest, RES>
     public RES execute(REQ request) throws IOException {
         String content = engine.generate(
                 resolveConversationId(request.conversationId()),
+                request.provider(),
                 promptType(),
                 variables(request),
                 tools());

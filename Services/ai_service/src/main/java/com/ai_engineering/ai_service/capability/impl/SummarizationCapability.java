@@ -42,6 +42,7 @@ public class SummarizationCapability implements Capability<SummarizeRequest, Sum
         }
         return engine.generateStructure(
                 conversationId,
+                request.provider(),
                 summaryTypeLoader.loadSummaryType(request.type()),
                 Map.of("text", request.text()),
                 SummarizeResponse.class);
