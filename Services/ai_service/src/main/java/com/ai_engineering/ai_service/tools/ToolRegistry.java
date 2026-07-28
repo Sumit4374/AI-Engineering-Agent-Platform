@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
+
 /**
  * Central registry of all tool beans, grouped by {@link ToolsCategory}.
  *
@@ -21,10 +22,11 @@ public class ToolRegistry {
 
     private final Map<ToolsCategory, List<Object>> toolsByCategory;
 
+    
     public ToolRegistry(List<AiTool> tools) {
         this.toolsByCategory = tools.stream()
                 .collect(Collectors.groupingBy(
-                        AiTool::category,
+                        tool -> tool.category(),
                         Collectors.mapping(tool -> (Object) tool, Collectors.toList())));
     }
 
