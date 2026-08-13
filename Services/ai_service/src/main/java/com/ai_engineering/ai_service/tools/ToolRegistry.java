@@ -24,7 +24,7 @@ public class ToolRegistry {
     public ToolRegistry(List<AiTool> tools) {
         this.toolsByCategory = tools.stream()
                 .collect(Collectors.groupingBy(
-                        AiTool::category,
+                    tool -> tool.category(),
                         Collectors.mapping(tool -> (Object) tool, Collectors.toList())));
     }
 
