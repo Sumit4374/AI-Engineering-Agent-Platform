@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.ai_engineering.ai_service.Capability.ChatCapability.ChatCapability;
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
 import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
 import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
@@ -24,10 +25,12 @@ public class AIServiceImpl implements AIService {
 
     private final AIEngine engine;
     private final SummaryTypeLoader summaryTypeLoader;
+    private final ChatCapability chatCapability;
 
-    AIServiceImpl(AIEngine engine, SummaryTypeLoader summaryTypeLoader) {
+    AIServiceImpl(AIEngine engine, SummaryTypeLoader summaryTypeLoader, ChatCapability chatCapability) {
         this.engine = engine;
         this.summaryTypeLoader = summaryTypeLoader;
+        this.chatCapability = chatCapability;
     }
 
     private String getConversationId(String conversationId){
@@ -39,16 +42,7 @@ public class AIServiceImpl implements AIService {
 
     @Override
     public ChatResponse chat(ChatRequest req) throws IOException{
-        return new ChatResponse(
-            engine.generate(
-                getConversationId(req.conversationId()),
-                PromptType.CHAT.getFileName(),
-                Map.of(
-                    "question",req.request()
-                ),
-                ToolsCategory.UTILITY, ToolsCategory.DEVELOPMENT, ToolsCategory.DOCUMENTATION
-            )
-        );
+        return chatCapability.execute(req);
     }
 
     @Override

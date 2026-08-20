@@ -13,6 +13,8 @@ import com.ai_engineering.ai_service.prompt.PromptRegistry;
 import com.ai_engineering.ai_service.tools.ToolRegistry;
 import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
+import reactor.core.publisher.Flux;
+
 @Service
 public class AIEngineImpl implements AIEngine {
 
@@ -55,6 +57,24 @@ public class AIEngineImpl implements AIEngine {
                 a -> a.param(ChatMemory.CONVERSATION_ID, conversationId)
             )
             .call()
+            .content();
+    }
+
+    @Override
+    public Flux<String> stream(
+                                String conversationId, 
+                                String promptType,
+                                Map<String, Object> variables,
+                                ToolsCategory... tools
+    ) throws IOException {
+        String prompt = promptRegistry.loadPrompt(promptType, variables);
+        log.debug("Text generation [conversationId={}, promptType={}]", conversationId, promptType);
+        return chatClient
+            .prompt(prompt)
+            .tools(toolRegistry.getTools(tools))
+            .advisors(
+                a -> a.param(ChatMemory.CONVERSATION_ID, conversationId)
+            ).stream()
             .content();
     }
 }

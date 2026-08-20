@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
+import reactor.core.publisher.Flux;
+
 public interface AIEngine {
 
     String generate(
@@ -19,6 +21,13 @@ public interface AIEngine {
         String promptType,
         Map<String, Object> variables,
         Class<T> responseType,
+        ToolsCategory... tools
+    ) throws IOException;
+
+    Flux<String> stream(
+        String conversationID,
+        String promptType,
+        Map<String,Object> variables,
         ToolsCategory... tools
     ) throws IOException;
 
