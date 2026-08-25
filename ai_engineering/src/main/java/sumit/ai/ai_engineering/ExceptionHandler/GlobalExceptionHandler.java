@@ -62,6 +62,16 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
+    @ExceptionHandler(sumit.ai.ai_engineering.common.exception.ResourceNotFoundException.class)
+    public ProblemDetail handleResourceNotFound(sumit.ai.ai_engineering.common.exception.ResourceNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(sumit.ai.ai_engineering.common.exception.ForbiddenAccessException.class)
+    public ProblemDetail handleForbiddenAccess(sumit.ai.ai_engineering.common.exception.ForbiddenAccessException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
     // Both unknown-user and wrong-password surface as a generic 401 to avoid user enumeration.
     @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class, AuthenticationException.class})
     public ProblemDetail handleAuthentication(AuthenticationException ex) {
