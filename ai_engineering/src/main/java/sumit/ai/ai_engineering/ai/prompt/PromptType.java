@@ -7,7 +7,8 @@ public enum PromptType {
     DOCUMENTATION("DOCUMENTATION.prompt"),
     ARCHITECTURE("ARCHITECTURE.prompt"),
     SUMMARIZATION("SUMMARIZATION.prompt"),
-    EXPLAIN("EXPLAIN.prompt");
+    EXPLAIN("EXPLAIN.prompt"),
+    RAG("RAG.prompt");
     
     private final String fileName;
 
