@@ -6,11 +6,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import sumit.ai.ai_engineering.ExceptionHandler.UserAlreadyExists;
 import sumit.ai.ai_engineering.user.Configuration.CustomUserDetails.CustomUserDetails;
 import sumit.ai.ai_engineering.user.DTO.Login.LoginRequest;
 import sumit.ai.ai_engineering.user.DTO.Login.LoginResponse;
 import sumit.ai.ai_engineering.user.DTO.SignUp.SignUpRequest;
-import sumit.ai.ai_engineering.user.GlobalExceptionHandling.UserAlreadyExists;
 import sumit.ai.ai_engineering.user.JWT.JwtService;
 import sumit.ai.ai_engineering.user.Model.User;
 import sumit.ai.ai_engineering.user.Repository.UserRepo;
