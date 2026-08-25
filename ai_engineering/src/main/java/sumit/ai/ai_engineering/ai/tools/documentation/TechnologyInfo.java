@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.tools.documentation;
+package sumit.ai.ai_engineering.ai.tools.documentation;
 
 public class TechnologyInfo {
 

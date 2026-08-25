@@ -1,4 +1,4 @@
-package com.ai_engineering.auth_service.GlobalExceptionHandling;
+package sumit.ai.ai_engineering.user.GlobalExceptionHandling;
 
 
 import lombok.experimental.StandardException;

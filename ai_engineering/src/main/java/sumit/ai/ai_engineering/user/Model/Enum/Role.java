@@ -1,4 +1,4 @@
-package com.ai_engineering.auth_service.Model.Enum;
+package sumit.ai.ai_engineering.user.Model.Enum;
 
 public enum Role {
     ADMIN,

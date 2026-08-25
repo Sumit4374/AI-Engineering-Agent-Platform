@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.exception;
+package sumit.ai.ai_engineering.ai.exception;
 
 import java.io.IOException;
 import java.util.HashMap;

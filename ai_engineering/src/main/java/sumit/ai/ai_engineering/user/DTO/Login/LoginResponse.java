@@ -1,4 +1,4 @@
-package com.ai_engineering.auth_service.DTO.Login;
+package sumit.ai.ai_engineering.user.DTO.Login;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

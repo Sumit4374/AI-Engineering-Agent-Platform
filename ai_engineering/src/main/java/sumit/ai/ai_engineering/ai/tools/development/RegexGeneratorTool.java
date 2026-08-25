@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.tools.development;
+package sumit.ai.ai_engineering.ai.tools.development;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -7,8 +7,10 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
-import com.ai_engineering.ai_service.tools.AiTool;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
+import sumit.ai.ai_engineering.ai.tools.AiTool;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
+
+
 
 @Component
 public class RegexGeneratorTool implements AiTool {

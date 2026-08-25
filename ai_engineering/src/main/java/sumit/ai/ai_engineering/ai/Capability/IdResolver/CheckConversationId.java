@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.Capability.IdResolver;
+package sumit.ai.ai_engineering.ai.Capability.IdResolver;
 
 import java.util.UUID;
 

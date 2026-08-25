@@ -1,6 +1,6 @@
-package com.ai_engineering.auth_service.Model;
+package sumit.ai.ai_engineering.user.Model;
 
-import com.ai_engineering.auth_service.Model.Enum.Role;
+import sumit.ai.ai_engineering.user.Model.Enum.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

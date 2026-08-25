@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.tools.utility;
+package sumit.ai.ai_engineering.ai.tools.utility;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -9,9 +9,11 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
-import com.ai_engineering.ai_service.tools.AiTool;
-import com.ai_engineering.ai_service.tools.model.HashAlgorithm;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
+import sumit.ai.ai_engineering.ai.tools.AiTool;
+import sumit.ai.ai_engineering.ai.tools.model.HashAlgorithm;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
+
+
 
 @Component
 public class HashTool implements AiTool {

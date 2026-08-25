@@ -1,7 +1,7 @@
-package com.ai_engineering.auth_service.Repository;
+package sumit.ai.ai_engineering.user.Repository;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.ai_engineering.auth_service.Model.User;
+import sumit.ai.ai_engineering.user.Model.User;
 
 
 public interface UserRepo extends JpaRepository<User,Long> {

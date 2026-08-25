@@ -1,4 +1,4 @@
-package com.ai_engineering.auth_service.JWT;
+package sumit.ai.ai_engineering.user.JWT;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.ai_engineering.auth_service.Configuration.CustomUserDetails.CustomUserDetailsService;
+import sumit.ai.ai_engineering.user.Configuration.CustomUserDetails.CustomUserDetailsService;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

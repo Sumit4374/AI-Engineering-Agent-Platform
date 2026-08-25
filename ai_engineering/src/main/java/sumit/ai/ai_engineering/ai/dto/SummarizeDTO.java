@@ -1,11 +1,11 @@
-package com.ai_engineering.ai_service.dto;
+package sumit.ai.ai_engineering.ai.dto;
 
 import java.util.List;
 
-import com.ai_engineering.ai_service.prompt.SummaryType;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import sumit.ai.ai_engineering.ai.prompt.SummaryType;
 
 public class SummarizeDTO {
     public record SummarizeRequest(

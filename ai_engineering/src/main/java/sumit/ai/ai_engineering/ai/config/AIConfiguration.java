@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.config;
+package sumit.ai.ai_engineering.ai.config;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;

@@ -1,4 +1,4 @@
-package com.ai_engineering.auth_service.Configuration.CustomUserDetails;
+package sumit.ai.ai_engineering.user.Configuration.CustomUserDetails;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.ai_engineering.auth_service.Model.User;
+import sumit.ai.ai_engineering.user.Model.User;
 
 
 public class CustomUserDetails implements UserDetails {

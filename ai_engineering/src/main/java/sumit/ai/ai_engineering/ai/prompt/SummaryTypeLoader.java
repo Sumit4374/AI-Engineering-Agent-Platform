@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.prompt;
+package sumit.ai.ai_engineering.ai.prompt;
 
 import org.springframework.stereotype.Component;
 

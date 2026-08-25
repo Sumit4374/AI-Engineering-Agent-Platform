@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.dto;
+package sumit.ai.ai_engineering.ai.dto;
 
 import java.util.List;
 

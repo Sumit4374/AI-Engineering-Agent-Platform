@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.controller;
+package sumit.ai.ai_engineering.ai.controller;
 
 import java.io.IOException;
 
@@ -8,17 +8,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
-import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
-import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
-import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewResponse;
-import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainRequest;
-import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainResponse;
-import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
-import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeResponse;
-import com.ai_engineering.ai_service.service.AIService;
+
 
 import jakarta.validation.Valid;
+import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatRequest;
+import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatResponse;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewRequest;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewResponse;
+import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainRequest;
+import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainResponse;
+import sumit.ai.ai_engineering.ai.dto.SummarizeDTO.SummarizeRequest;
+import sumit.ai.ai_engineering.ai.dto.SummarizeDTO.SummarizeResponse;
+import sumit.ai.ai_engineering.ai.service.AIService;
 
 
 @RestController

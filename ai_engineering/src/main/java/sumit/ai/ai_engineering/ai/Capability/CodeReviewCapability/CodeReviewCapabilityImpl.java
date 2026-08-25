@@ -1,14 +1,16 @@
-package com.ai_engineering.ai_service.Capability.CodeReviewCapability;
+package sumit.ai.ai_engineering.ai.Capability.CodeReviewCapability;
 
 import java.io.IOException;
 import java.util.Map;
 
-import com.ai_engineering.ai_service.Capability.IdResolver.CheckConversationId;
-import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
-import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewResponse;
-import com.ai_engineering.ai_service.engine.AIEngine;
-import com.ai_engineering.ai_service.prompt.PromptType;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
+import sumit.ai.ai_engineering.ai.Capability.IdResolver.CheckConversationId;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewRequest;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewResponse;
+import sumit.ai.ai_engineering.ai.engine.AIEngine;
+import sumit.ai.ai_engineering.ai.prompt.PromptType;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
+
+
 
 public class CodeReviewCapabilityImpl implements CodeReviewCapability{
     

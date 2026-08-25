@@ -1,14 +1,16 @@
-package com.ai_engineering.ai_service.tools.documentation;
+package sumit.ai.ai_engineering.ai.tools.documentation;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
-import com.ai_engineering.ai_service.tools.AiTool;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
-import com.ai_engineering.ai_service.tools.documentation.TechnologyInfo.Database;
-import com.ai_engineering.ai_service.tools.documentation.TechnologyInfo.Framework;
-import com.ai_engineering.ai_service.tools.documentation.TechnologyInfo.Language;
+import sumit.ai.ai_engineering.ai.tools.AiTool;
+import sumit.ai.ai_engineering.ai.tools.documentation.TechnologyInfo.Database;
+import sumit.ai.ai_engineering.ai.tools.documentation.TechnologyInfo.Framework;
+import sumit.ai.ai_engineering.ai.tools.documentation.TechnologyInfo.Language;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
+
+
 
 @Component
 public class DocumentationSearchTool implements AiTool {

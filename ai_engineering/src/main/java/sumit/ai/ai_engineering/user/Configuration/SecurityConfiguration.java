@@ -1,4 +1,4 @@
-package com.ai_engineering.auth_service.Configuration;
+package sumit.ai.ai_engineering.user.Configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.ai_engineering.auth_service.Configuration.CustomUserDetails.CustomUserDetailsService;
-import com.ai_engineering.auth_service.JWT.JwtAuthenticationFilter;
+import sumit.ai.ai_engineering.user.Configuration.CustomUserDetails.CustomUserDetailsService;
+import sumit.ai.ai_engineering.user.JWT.JwtAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration

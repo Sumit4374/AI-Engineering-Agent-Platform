@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.service;
+package sumit.ai.ai_engineering.ai.service;
 
 import java.io.IOException;
 import java.util.Map;
@@ -6,19 +6,21 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.ai_engineering.ai_service.Capability.ChatCapability.ChatCapability;
-import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
-import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
-import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
-import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewResponse;
-import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainRequest;
-import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainResponse;
-import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
-import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeResponse;
-import com.ai_engineering.ai_service.engine.AIEngine;
-import com.ai_engineering.ai_service.prompt.PromptType;
-import com.ai_engineering.ai_service.prompt.SummaryTypeLoader;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
+import sumit.ai.ai_engineering.ai.Capability.ChatCapability.ChatCapability;
+import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatRequest;
+import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatResponse;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewRequest;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewResponse;
+import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainRequest;
+import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainResponse;
+import sumit.ai.ai_engineering.ai.dto.SummarizeDTO.SummarizeRequest;
+import sumit.ai.ai_engineering.ai.dto.SummarizeDTO.SummarizeResponse;
+import sumit.ai.ai_engineering.ai.engine.AIEngine;
+import sumit.ai.ai_engineering.ai.prompt.PromptType;
+import sumit.ai.ai_engineering.ai.prompt.SummaryTypeLoader;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
+
+
 
 @Service
 public class AIServiceImpl implements AIService {

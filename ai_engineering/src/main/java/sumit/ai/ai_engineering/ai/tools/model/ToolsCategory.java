@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.tools.model;
+package sumit.ai.ai_engineering.ai.tools.model;
 
 public enum ToolsCategory {
     UTILITY,

@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.engine;
+package sumit.ai.ai_engineering.ai.engine;
 
 import java.io.IOException;
 import java.util.Map;
@@ -9,11 +9,11 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 
-import com.ai_engineering.ai_service.prompt.PromptRegistry;
-import com.ai_engineering.ai_service.tools.ToolRegistry;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
 import reactor.core.publisher.Flux;
+import sumit.ai.ai_engineering.ai.prompt.PromptRegistry;
+import sumit.ai.ai_engineering.ai.tools.ToolRegistry;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
 
 @Service
 public class AIEngineImpl implements AIEngine {

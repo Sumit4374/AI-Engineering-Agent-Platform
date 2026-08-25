@@ -1,11 +1,11 @@
-package com.ai_engineering.ai_service.engine;
+package sumit.ai.ai_engineering.ai.engine;
 
 import java.io.IOException;
 import java.util.Map;
 
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 
 import reactor.core.publisher.Flux;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
 
 public interface AIEngine {
 

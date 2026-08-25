@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.tools;
+package sumit.ai.ai_engineering.ai.tools;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
+
 
 /**
  * Central registry of all tool beans, grouped by {@link ToolsCategory}.

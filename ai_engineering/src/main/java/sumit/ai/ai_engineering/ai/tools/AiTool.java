@@ -1,6 +1,6 @@
-package com.ai_engineering.ai_service.tools;
+package sumit.ai.ai_engineering.ai.tools;
 
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
 
 /**
  * Marker interface implemented by every tool bean so the {@link ToolRegistry}

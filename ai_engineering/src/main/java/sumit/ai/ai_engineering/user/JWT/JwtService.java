@@ -1,5 +1,5 @@
-package com.ai_engineering.auth_service.JWT;
-import com.ai_engineering.auth_service.Configuration.CustomUserDetails.CustomUserDetails;
+package sumit.ai.ai_engineering.user.JWT;
+import sumit.ai.ai_engineering.user.Configuration.CustomUserDetails.CustomUserDetails;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;

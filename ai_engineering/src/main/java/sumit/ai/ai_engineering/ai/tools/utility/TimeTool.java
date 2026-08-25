@@ -1,4 +1,4 @@
-package com.ai_engineering.ai_service.tools.utility;
+package sumit.ai.ai_engineering.ai.tools.utility;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,9 +9,11 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
-import com.ai_engineering.ai_service.tools.AiTool;
-import com.ai_engineering.ai_service.tools.model.TimeInfo;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
+import sumit.ai.ai_engineering.ai.tools.AiTool;
+import sumit.ai.ai_engineering.ai.tools.model.TimeInfo;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
+
+
 
 @Component
 public class TimeTool implements AiTool {

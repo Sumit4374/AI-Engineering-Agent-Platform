@@ -1,6 +1,6 @@
-package com.ai_engineering.ai_service.tools.documentation;
+package sumit.ai.ai_engineering.ai.tools.documentation;
 
-import com.ai_engineering.ai_service.tools.documentation.TechnologyInfo.Urls;
+import sumit.ai.ai_engineering.ai.tools.documentation.TechnologyInfo.Urls;
 
 public record DocumentationResult(
     String title,

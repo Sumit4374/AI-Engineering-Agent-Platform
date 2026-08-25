@@ -1,4 +1,4 @@
-package com.ai_engineering.auth_service.Service;
+package sumit.ai.ai_engineering.user.Service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -6,14 +6,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ai_engineering.auth_service.Configuration.CustomUserDetails.CustomUserDetails;
-import com.ai_engineering.auth_service.DTO.Login.LoginRequest;
-import com.ai_engineering.auth_service.DTO.Login.LoginResponse;
-import com.ai_engineering.auth_service.DTO.SignUp.SignUpRequest;
-import com.ai_engineering.auth_service.GlobalExceptionHandling.UserAlreadyExists;
-import com.ai_engineering.auth_service.JWT.JwtService;
-import com.ai_engineering.auth_service.Model.User;
-import com.ai_engineering.auth_service.Repository.UserRepo;
+import sumit.ai.ai_engineering.user.Configuration.CustomUserDetails.CustomUserDetails;
+import sumit.ai.ai_engineering.user.DTO.Login.LoginRequest;
+import sumit.ai.ai_engineering.user.DTO.Login.LoginResponse;
+import sumit.ai.ai_engineering.user.DTO.SignUp.SignUpRequest;
+import sumit.ai.ai_engineering.user.GlobalExceptionHandling.UserAlreadyExists;
+import sumit.ai.ai_engineering.user.JWT.JwtService;
+import sumit.ai.ai_engineering.user.Model.User;
+import sumit.ai.ai_engineering.user.Repository.UserRepo;
 
 
 @Service

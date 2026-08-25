@@ -1,11 +1,11 @@
-package com.ai_engineering.auth_service.Configuration.CustomUserDetails;
+package sumit.ai.ai_engineering.user.Configuration.CustomUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ai_engineering.auth_service.Model.User;
-import com.ai_engineering.auth_service.Repository.UserRepo;
+import sumit.ai.ai_engineering.user.Model.User;
+import sumit.ai.ai_engineering.user.Repository.UserRepo;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService  {

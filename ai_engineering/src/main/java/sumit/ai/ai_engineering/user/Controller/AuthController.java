@@ -1,14 +1,14 @@
-package com.ai_engineering.auth_service.Controller;
+package sumit.ai.ai_engineering.user.Controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ai_engineering.auth_service.DTO.Login.LoginRequest;
-import com.ai_engineering.auth_service.DTO.Login.LoginResponse;
-import com.ai_engineering.auth_service.DTO.SignUp.SignUpRequest;
-import com.ai_engineering.auth_service.Service.AuthService;
+import sumit.ai.ai_engineering.user.DTO.Login.LoginRequest;
+import sumit.ai.ai_engineering.user.DTO.Login.LoginResponse;
+import sumit.ai.ai_engineering.user.DTO.SignUp.SignUpRequest;
+import sumit.ai.ai_engineering.user.Service.AuthService;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;

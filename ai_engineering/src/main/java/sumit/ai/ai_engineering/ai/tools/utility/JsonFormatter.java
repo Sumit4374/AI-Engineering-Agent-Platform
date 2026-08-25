@@ -1,13 +1,14 @@
-package com.ai_engineering.ai_service.tools.utility;
+package sumit.ai.ai_engineering.ai.tools.utility;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
-import com.ai_engineering.ai_service.tools.AiTool;
-import com.ai_engineering.ai_service.tools.model.ToolsCategory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import sumit.ai.ai_engineering.ai.tools.AiTool;
+import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
 
 @Component
 public class JsonFormatter implements AiTool {

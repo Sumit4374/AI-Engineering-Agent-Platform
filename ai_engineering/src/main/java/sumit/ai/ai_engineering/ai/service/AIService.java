@@ -1,16 +1,18 @@
-package com.ai_engineering.ai_service.service;
+package sumit.ai.ai_engineering.ai.service;
 
 
 import java.io.IOException;
 
-import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
-import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
-import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewRequest;
-import com.ai_engineering.ai_service.dto.CodeReviewDTO.CodeReviewResponse;
-import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainRequest;
-import com.ai_engineering.ai_service.dto.ExplainDTO.ExplainResponse;
-import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeRequest;
-import com.ai_engineering.ai_service.dto.SummarizeDTO.SummarizeResponse;
+import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatRequest;
+import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatResponse;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewRequest;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewResponse;
+import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainRequest;
+import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainResponse;
+import sumit.ai.ai_engineering.ai.dto.SummarizeDTO.SummarizeRequest;
+import sumit.ai.ai_engineering.ai.dto.SummarizeDTO.SummarizeResponse;
+
+
 
 public interface AIService {
     ChatResponse chat(ChatRequest req) throws IOException;

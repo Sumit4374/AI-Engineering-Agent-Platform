@@ -1,12 +1,11 @@
-package com.ai_engineering.ai_service.Capability.ChatCapability;
+package sumit.ai.ai_engineering.ai.Capability.ChatCapability;
 
 import java.io.IOException;
 
 
-import com.ai_engineering.ai_service.dto.ChatDTO.ChatRequest;
-import com.ai_engineering.ai_service.dto.ChatDTO.ChatResponse;
-
 import reactor.core.publisher.Flux;
+import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatRequest;
+import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatResponse;
 
 public interface ChatCapability {
     ChatResponse execute(ChatRequest request) throws IOException;

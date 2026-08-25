@@ -1,4 +1,4 @@
-package com.ai_engineering.auth_service.DTO.SignUp;
+package sumit.ai.ai_engineering.user.DTO.SignUp;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
