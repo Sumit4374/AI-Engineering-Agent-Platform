@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
@@ -15,6 +16,8 @@ import sumit.ai.ai_engineering.ai.provider.ModelProvider;
 import sumit.ai.ai_engineering.ai.provider.ModelProviderRegistry;
 import sumit.ai.ai_engineering.ai.tools.ToolRegistry;
 import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
+import sumit.ai.ai_engineering.infrastructure.observability.PlatformMetrics;
+import sumit.ai.ai_engineering.memory.model.MemoryMessage;
 
 @Service
 public class AIEngineImpl implements AIEngine {
@@ -25,16 +28,19 @@ public class AIEngineImpl implements AIEngine {
     private final PromptRegistry promptRegistry;
     private final ToolRegistry toolRegistry;
     private final ChatClient fallbackChatClient;
+    private final ObjectProvider<PlatformMetrics> platformMetricsProvider;
 
     public AIEngineImpl(
             ModelProviderRegistry modelProviderRegistry,
             PromptRegistry promptRegistry,
             ToolRegistry toolRegistry,
-            ChatClient chatClient) {
+            ChatClient chatClient,
+            ObjectProvider<PlatformMetrics> platformMetricsProvider) {
         this.modelProviderRegistry = modelProviderRegistry;
         this.promptRegistry = promptRegistry;
         this.toolRegistry = toolRegistry;
         this.fallbackChatClient = chatClient;
+        this.platformMetricsProvider = platformMetricsProvider;
     }
 
     private ChatClient getChatClient() {
@@ -47,42 +53,75 @@ public class AIEngineImpl implements AIEngine {
         return fallbackChatClient;
     }
 
+    private String getActiveProviderName() {
+        if (modelProviderRegistry != null && modelProviderRegistry.getActiveProvider() != null) {
+            return modelProviderRegistry.getActiveProvider().getProviderType().name();
+        }
+        return "DEFAULT";
+    }
+
     @Override
     public <T> T generateStructure(String conversationId, String promptType, Map<String, Object> variables,
             Class<T> responseType, ToolsCategory... tools) throws IOException {
-        String prompt = promptRegistry.loadPrompt(promptType, variables);
-        log.debug("Structured generation [conversationId={}, promptType={}]", conversationId, promptType);
-        return getChatClient()
-                .prompt(prompt)
-                .tools(toolRegistry.getTools(tools))
-                .advisors(
-                        a -> {
-                            if (conversationId != null) {
-                                a.param(ChatMemory.CONVERSATION_ID, conversationId);
+        long start = System.currentTimeMillis();
+        boolean success = false;
+        try {
+            String prompt = promptRegistry.loadPrompt(promptType, variables);
+            log.debug("Structured generation [conversationId={}, promptType={}]", conversationId, promptType);
+            T result = getChatClient()
+                    .prompt(prompt)
+                    .tools(toolRegistry.getTools(tools))
+                    .advisors(
+                            a -> {
+                                if (conversationId != null) {
+                                    a.param(ChatMemory.CONVERSATION_ID, conversationId);
+                                }
                             }
-                        }
-                )
-                .call()
-                .entity(responseType);
+                    )
+                    .call()
+                    .entity(responseType);
+            success = true;
+            return result;
+        } finally {
+            long duration = System.currentTimeMillis() - start;
+            PlatformMetrics metrics = platformMetricsProvider.getIfAvailable();
+            if (metrics != null) {
+                metrics.recordLlmCall(getActiveProviderName(), promptType, duration, success, 0);
+            }
+        }
     }
 
     @Override
     public String generate(String conversationId, String promptType, Map<String, Object> variables,
             ToolsCategory... tools) throws IOException {
-        String prompt = promptRegistry.loadPrompt(promptType, variables);
-        log.debug("Text generation [conversationId={}, promptType={}]", conversationId, promptType);
-        return getChatClient()
-                .prompt(prompt)
-                .tools(toolRegistry.getTools(tools))
-                .advisors(
-                        a -> {
-                            if (conversationId != null) {
-                                a.param(ChatMemory.CONVERSATION_ID, conversationId);
+        long start = System.currentTimeMillis();
+        boolean success = false;
+        int tokens = 0;
+        try {
+            String prompt = promptRegistry.loadPrompt(promptType, variables);
+            log.debug("Text generation [conversationId={}, promptType={}]", conversationId, promptType);
+            String result = getChatClient()
+                    .prompt(prompt)
+                    .tools(toolRegistry.getTools(tools))
+                    .advisors(
+                            a -> {
+                                if (conversationId != null) {
+                                    a.param(ChatMemory.CONVERSATION_ID, conversationId);
+                                }
                             }
-                        }
-                )
-                .call()
-                .content();
+                    )
+                    .call()
+                    .content();
+            tokens = MemoryMessage.estimateTokens(result);
+            success = true;
+            return result;
+        } finally {
+            long duration = System.currentTimeMillis() - start;
+            PlatformMetrics metrics = platformMetricsProvider.getIfAvailable();
+            if (metrics != null) {
+                metrics.recordLlmCall(getActiveProviderName(), promptType, duration, success, tokens);
+            }
+        }
     }
 
     @Override

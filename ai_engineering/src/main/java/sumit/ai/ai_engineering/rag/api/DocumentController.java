@@ -18,27 +18,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
-import sumit.ai.ai_engineering.common.exception.ForbiddenAccessException;
-import sumit.ai.ai_engineering.common.exception.ResourceNotFoundException;
 import sumit.ai.ai_engineering.common.utility.SecurityUtils;
 import sumit.ai.ai_engineering.rag.api.dto.DocumentDTO;
 import sumit.ai.ai_engineering.rag.api.dto.DocumentUploadResponse;
 import sumit.ai.ai_engineering.rag.api.dto.IngestTextRequest;
 import sumit.ai.ai_engineering.rag.ingestion.DocumentIngestionService;
 import sumit.ai.ai_engineering.rag.model.Document;
-import sumit.ai.ai_engineering.rag.model.DocumentRepository;
 
 @RestController
 @RequestMapping("/api/v1/documents")
 public class DocumentController {
 
     private final DocumentIngestionService ingestionService;
-    private final DocumentRepository documentRepository;
 
-    public DocumentController(DocumentIngestionService ingestionService,
-                              DocumentRepository documentRepository) {
+    public DocumentController(DocumentIngestionService ingestionService) {
         this.ingestionService = ingestionService;
-        this.documentRepository = documentRepository;
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -83,7 +77,7 @@ public class DocumentController {
     @GetMapping
     public ResponseEntity<List<DocumentDTO>> listDocuments() {
         Long userId = SecurityUtils.getRequiredUserId();
-        List<DocumentDTO> list = documentRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
+        List<DocumentDTO> list = ingestionService.listDocuments(userId).stream()
                 .map(DocumentDTO::from)
                 .toList();
         return ResponseEntity.ok(list);
@@ -92,13 +86,7 @@ public class DocumentController {
     @GetMapping("/{id}")
     public ResponseEntity<DocumentDTO> getDocument(@PathVariable("id") UUID id) {
         Long userId = SecurityUtils.getRequiredUserId();
-        Document doc = documentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Document not found: " + id));
-
-        if (!doc.getUserId().equals(userId)) {
-            throw new ForbiddenAccessException("You do not have access to document: " + id);
-        }
-
+        Document doc = ingestionService.getDocument(userId, id);
         return ResponseEntity.ok(DocumentDTO.from(doc));
     }
 

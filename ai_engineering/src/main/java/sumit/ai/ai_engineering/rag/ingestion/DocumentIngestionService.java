@@ -10,5 +10,9 @@ public interface DocumentIngestionService {
 
     Document ingestRawText(Long userId, String title, String content);
 
+    java.util.List<Document> listDocuments(Long userId);
+
+    Document getDocument(Long userId, UUID documentId);
+
     void deleteDocument(Long userId, UUID documentId);
 }

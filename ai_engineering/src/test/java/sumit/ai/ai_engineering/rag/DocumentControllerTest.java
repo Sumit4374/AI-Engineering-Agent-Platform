@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
@@ -30,18 +29,16 @@ import sumit.ai.ai_engineering.rag.api.dto.DocumentUploadResponse;
 import sumit.ai.ai_engineering.rag.api.dto.IngestTextRequest;
 import sumit.ai.ai_engineering.rag.ingestion.DocumentIngestionService;
 import sumit.ai.ai_engineering.rag.model.Document;
-import sumit.ai.ai_engineering.rag.model.DocumentRepository;
 import sumit.ai.ai_engineering.rag.model.DocumentStatus;
 import sumit.ai.ai_engineering.rag.model.DocumentType;
 import sumit.ai.ai_engineering.user.Configuration.CustomUserDetails.CustomUserDetails;
-import sumit.ai.ai_engineering.user.Model.User;
 import sumit.ai.ai_engineering.user.Model.Enum.Role;
+import sumit.ai.ai_engineering.user.Model.User;
 
 @ExtendWith(MockitoExtension.class)
 class DocumentControllerTest {
 
     @Mock private DocumentIngestionService ingestionService;
-    @Mock private DocumentRepository documentRepository;
 
     private DocumentController controller;
 
@@ -50,7 +47,7 @@ class DocumentControllerTest {
 
     @BeforeEach
     void setUp() {
-        controller = new DocumentController(ingestionService, documentRepository);
+        controller = new DocumentController(ingestionService);
         User user = User.builder().id(userId).userName("docuser").role(Role.USER).build();
         CustomUserDetails details = new CustomUserDetails(user);
         UsernamePasswordAuthenticationToken auth =
@@ -120,7 +117,7 @@ class DocumentControllerTest {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        when(documentRepository.findByUserIdOrderByCreatedAtDesc(userId)).thenReturn(List.of(doc));
+        when(ingestionService.listDocuments(userId)).thenReturn(List.of(doc));
 
         ResponseEntity<List<DocumentDTO>> response = controller.listDocuments();
 
@@ -142,7 +139,7 @@ class DocumentControllerTest {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        when(documentRepository.findById(docId)).thenReturn(Optional.of(doc));
+        when(ingestionService.getDocument(userId, docId)).thenReturn(doc);
 
         ResponseEntity<DocumentDTO> response = controller.getDocument(docId);
 

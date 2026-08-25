@@ -140,6 +140,22 @@ public class DocumentIngestionServiceImpl implements DocumentIngestionService {
     }
 
     @Override
+    public List<Document> listDocuments(Long userId) {
+        return documentRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    }
+
+    @Override
+    public Document getDocument(Long userId, UUID documentId) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Document not found: " + documentId));
+
+        if (!document.getUserId().equals(userId)) {
+            throw new ForbiddenAccessException("You do not have access to document: " + documentId);
+        }
+        return document;
+    }
+
+    @Override
     public void deleteDocument(Long userId, UUID documentId) {
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Document not found: " + documentId));

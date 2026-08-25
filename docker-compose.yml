@@ -1,0 +1,144 @@
+services:
+  # ============================================================
+  # 1. Main Spring Boot Modular Monolith Application
+  # ============================================================
+  app:
+    build:
+      context: .
+      dockerfile: ai_engineering/Dockerfile
+    container_name: ai_engineering_app
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - SERVER_PORT=8080
+      - DB_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-ai_engineering_db}
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - JWT_SECRET=${JWT_SECRET:-your_super_secret_jwt_key_that_is_at_least_32_characters_long_12345}
+      - JWT_EXPIRATION_MS=${JWT_EXPIRATION_MS:-86400000}
+      - AI_PROVIDER=${AI_PROVIDER:-NVIDIA_NIM}
+      - OPEN_API_KEY=${OPEN_API_KEY:-}
+      - OPEN_API_BASE_URL=${OPEN_API_BASE_URL:-https://integrate.api.nvidia.com/v1}
+      - CHAT_MODEL=${CHAT_MODEL:-meta/llama-3.1-70b-instruct}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://localhost:11434}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3}
+      - CHAT_MEMORY_INIT_SCHEMA=${CHAT_MEMORY_INIT_SCHEMA:-never}
+      - KAFKA_ENABLED=${KAFKA_ENABLED:-true}
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - MCP_WORKSPACE_ROOT=/app
+      - MCP_MAX_READ_BYTES=262144
+      - MCP_MAX_TREE_DEPTH=5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks:
+      - ai_platform_network
+    restart: unless-stopped
+
+  # ============================================================
+  # 2. PostgreSQL with pgvector Extension
+  # ============================================================
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: ai_engineering_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ai_engineering_db}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${POSTGRES_DB:-ai_engineering_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ai_platform_network
+    restart: unless-stopped
+
+  # ============================================================
+  # 3. Apache Kafka (KRaft Mode — No ZooKeeper required)
+  # ============================================================
+  kafka:
+    image: apache/kafka:3.9.0
+    container_name: ai_engineering_kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - ai_platform_network
+    restart: unless-stopped
+
+  # ============================================================
+  # 4. Kafka UI — Topic & Consumer Management Dashboard
+  # ============================================================
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: ai_engineering_kafka_ui
+    ports:
+      - "8085:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: ai-engineering-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    depends_on:
+      - kafka
+    networks:
+      - ai_platform_network
+    restart: unless-stopped
+
+  # ============================================================
+  # 5. Prometheus — Metrics Collector
+  # ============================================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ai_engineering_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    depends_on:
+      - app
+    networks:
+      - ai_platform_network
+    restart: unless-stopped
+
+# ============================================================
+# Persistent Storage Volumes
+# ============================================================
+volumes:
+  postgres_data:
+    driver: local
+  kafka_data:
+    driver: local
+  prometheus_data:
+    driver: local
+
+# ============================================================
+# Isolated Platform Bridge Network
+# ============================================================
+networks:
+  ai_platform_network:
+    driver: bridge
