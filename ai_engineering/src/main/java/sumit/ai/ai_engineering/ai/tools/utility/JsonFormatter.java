@@ -13,10 +13,9 @@ import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
 @Component
 public class JsonFormatter implements AiTool {
     
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public JsonFormatter(ObjectMapper objectMapper){
-        this.objectMapper = objectMapper;
+    public JsonFormatter(){
     }
 
     @Tool(description = "Pretty print a JSON string with indentation and line breaks.")
