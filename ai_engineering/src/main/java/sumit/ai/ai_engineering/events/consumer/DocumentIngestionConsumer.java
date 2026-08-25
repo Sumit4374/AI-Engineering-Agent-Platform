@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import sumit.ai.ai_engineering.events.model.DocumentIngestedEvent;
@@ -91,7 +90,8 @@ public class DocumentIngestionConsumer {
                 return;
             }
 
-            List<Chunk> chunks = chunkingService.chunk(document.getId(), event.userId(), text, event.fileName(), docType, 400, 50);
+            List<Chunk> chunks = chunkingService.chunk(document.getId(), event.userId(), text, event.fileName(),
+                    docType, 400, 50);
             List<String> chunkTexts = chunks.stream().map(Chunk::content).toList();
             List<float[]> embeddings = embeddingService.embedBatch(chunkTexts);
 
@@ -139,8 +139,7 @@ public class DocumentIngestionConsumer {
                 event.documentId(),
                 event.fileName(),
                 totalChunks,
-                status
-        );
+                status);
         eventPublisher.publish("document.ingested", ingestedEvent);
     }
 }

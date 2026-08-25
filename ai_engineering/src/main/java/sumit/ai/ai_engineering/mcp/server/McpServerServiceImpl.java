@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +42,8 @@ public class McpServerServiceImpl implements McpServerService {
                     Tool toolAnnotation = method.getAnnotation(Tool.class);
                     String name = method.getName();
                     String description = toolAnnotation.description();
-                    invokerMap.put(name.toLowerCase(), new ToolInvoker(toolBean, method, name, description, toolBean.category().name()));
+                    invokerMap.put(name.toLowerCase(),
+                            new ToolInvoker(toolBean, method, name, description, toolBean.category().name()));
                     log.debug("Registered MCP tool [name={}, bean={}]", name, toolBean.getClass().getSimpleName());
                 }
             }
@@ -58,8 +58,7 @@ public class McpServerServiceImpl implements McpServerService {
                 SERVER_VERSION,
                 PROTOCOL_VERSION,
                 invokerMap.size(),
-                List.of("tools", "filesystem", "utility", "development", "documentation")
-        );
+                List.of("tools", "filesystem", "utility", "development", "documentation"));
     }
 
     @Override
@@ -93,8 +92,7 @@ public class McpServerServiceImpl implements McpServerService {
                     invoker.name(),
                     invoker.description(),
                     invoker.category(),
-                    schema
-            ));
+                    schema));
         }
         return definitions;
     }
@@ -146,9 +144,12 @@ public class McpServerServiceImpl implements McpServerService {
     private Object convertValue(Object val, Class<?> targetType) {
         if (val == null) {
             if (targetType.isPrimitive()) {
-                if (targetType == int.class) return 0;
-                if (targetType == double.class) return 0.0;
-                if (targetType == boolean.class) return false;
+                if (targetType == int.class)
+                    return 0;
+                if (targetType == double.class)
+                    return 0.0;
+                if (targetType == boolean.class)
+                    return false;
             }
             return null;
         }
@@ -158,12 +159,21 @@ public class McpServerServiceImpl implements McpServerService {
         }
 
         String str = val.toString();
-        if (targetType == String.class) return str;
+        if (targetType == String.class)
+            return str;
         if (targetType == Integer.class || targetType == int.class) {
-            try { return (int) Double.parseDouble(str); } catch (Exception e) { return 0; }
+            try {
+                return (int) Double.parseDouble(str);
+            } catch (Exception e) {
+                return 0;
+            }
         }
         if (targetType == Double.class || targetType == double.class) {
-            try { return Double.parseDouble(str); } catch (Exception e) { return 0.0; }
+            try {
+                return Double.parseDouble(str);
+            } catch (Exception e) {
+                return 0.0;
+            }
         }
         if (targetType == Boolean.class || targetType == boolean.class) {
             return Boolean.parseBoolean(str);
@@ -173,12 +183,17 @@ public class McpServerServiceImpl implements McpServerService {
     }
 
     private String getJsonType(Class<?> type) {
-        if (type == String.class) return "string";
-        if (type == int.class || type == Integer.class || type == long.class || type == Long.class) return "integer";
-        if (type == double.class || type == Double.class || type == float.class || type == Float.class) return "number";
-        if (type == boolean.class || type == Boolean.class) return "boolean";
+        if (type == String.class)
+            return "string";
+        if (type == int.class || type == Integer.class || type == long.class || type == Long.class)
+            return "integer";
+        if (type == double.class || type == Double.class || type == float.class || type == Float.class)
+            return "number";
+        if (type == boolean.class || type == Boolean.class)
+            return "boolean";
         return "object";
     }
 
-    private record ToolInvoker(Object bean, Method method, String name, String description, String category) {}
+    private record ToolInvoker(Object bean, Method method, String name, String description, String category) {
+    }
 }

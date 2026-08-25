@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,27 +18,28 @@ import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
 import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatRequest;
 import sumit.ai.ai_engineering.ai.dto.ChatDTO.ChatResponse;
+import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewRequest;
 import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainRequest;
 import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainResponse;
+import sumit.ai.ai_engineering.ai.dto.SummarizeDTO.SummarizeRequest;
+import sumit.ai.ai_engineering.ai.provider.ModelProviderRegistry;
+import sumit.ai.ai_engineering.ai.provider.ModelProviderRegistry.ModelProviderInfo;
 import sumit.ai.ai_engineering.ai.service.AIService;
 
 /**
  * Pure unit tests for {@link AIController} — no Spring context required.
- *
- * <p>Tests verify that the controller correctly delegates to the AIService and maps
- * results to the appropriate HTTP response structures.
  */
 @ExtendWith(MockitoExtension.class)
 class AIControllerTest {
 
-    @Mock
-    private AIService aiService;
+    @Mock private AIService aiService;
+    @Mock private ModelProviderRegistry modelProviderRegistry;
 
     private AIController controller;
 
     @BeforeEach
     void setUp() {
-        controller = new AIController(aiService);
+        controller = new AIController(aiService, modelProviderRegistry);
     }
 
     // ---- /chat ----
@@ -88,5 +90,20 @@ class AIControllerTest {
         Flux<String> result = controller.streamChat(new ChatRequest("conv-1", "Hello"));
 
         assertThat(result.collectList().block()).containsExactly("Hello", " world");
+    }
+
+    // ---- /providers ----
+
+    @Test
+    void getProviders_returnsListFromRegistry() {
+        when(modelProviderRegistry.getAllProviders()).thenReturn(List.of(
+                new ModelProviderInfo("NVIDIA_NIM", "NVIDIA NIM", "meta/llama-3.1-70b-instruct", true, true)
+        ));
+
+        ResponseEntity<List<ModelProviderInfo>> resp = controller.getProviders();
+
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(resp.getBody()).hasSize(1);
+        assertThat(resp.getBody().get(0).type()).isEqualTo("NVIDIA_NIM");
     }
 }
