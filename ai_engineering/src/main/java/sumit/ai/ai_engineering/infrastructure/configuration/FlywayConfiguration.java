@@ -18,6 +18,7 @@ public class FlywayConfiguration {
                 .baselineOnMigrate(true)
                 .baselineVersion("0")
                 .load();
+        flyway.repair();
         flyway.migrate();
         return flyway;
     }

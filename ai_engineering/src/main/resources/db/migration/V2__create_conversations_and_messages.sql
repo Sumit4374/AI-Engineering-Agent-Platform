@@ -6,7 +6,7 @@
 
 CREATE TABLE IF NOT EXISTS conversations (
     id          UUID PRIMARY KEY,
-    user_id     BIGINT NOT NULL REFERENCES "Users"(id) ON DELETE CASCADE,
+    user_id     BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     title       VARCHAR(255) NOT NULL,
     status      VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

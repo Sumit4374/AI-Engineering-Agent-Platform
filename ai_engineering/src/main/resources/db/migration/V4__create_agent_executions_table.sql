@@ -6,7 +6,7 @@
 
 CREATE TABLE IF NOT EXISTS agent_executions (
     id              UUID PRIMARY KEY,
-    user_id         BIGINT NOT NULL REFERENCES "Users"(id) ON DELETE CASCADE,
+    user_id         BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     goal            TEXT NOT NULL,
     status          VARCHAR(20) NOT NULL DEFAULT 'RUNNING',
     iterations      INT NOT NULL DEFAULT 0,

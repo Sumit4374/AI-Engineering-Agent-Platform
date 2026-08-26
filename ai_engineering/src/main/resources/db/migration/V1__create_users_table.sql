@@ -5,7 +5,7 @@
 -- been applied to any environment. Create a new migration instead.
 -- ============================================================
 
-CREATE TABLE IF NOT EXISTS "Users" (
+CREATE TABLE IF NOT EXISTS users (
     id            BIGSERIAL    PRIMARY KEY,
     user_name     VARCHAR(100) NOT NULL UNIQUE,
     email         VARCHAR(255) NOT NULL UNIQUE,
@@ -15,4 +15,4 @@ CREATE TABLE IF NOT EXISTS "Users" (
 );
 
 -- Index on email for fast authentication lookups
-CREATE INDEX IF NOT EXISTS idx_users_email ON "Users" (email);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);

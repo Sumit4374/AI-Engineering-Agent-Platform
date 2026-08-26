@@ -4,8 +4,8 @@ services:
   # ============================================================
   app:
     build:
-      context: .
-      dockerfile: ai_engineering/Dockerfile
+      context: ./ai_engineering
+      dockerfile: Dockerfile
     container_name: ai_engineering_app
     ports:
       - "${SERVER_PORT:-8080}:8080"
@@ -117,7 +117,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./ai_engineering/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
     depends_on:
       - app
