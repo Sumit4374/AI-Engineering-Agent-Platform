@@ -24,9 +24,6 @@ import sumit.ai.ai_engineering.ai.service.AIService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import sumit.ai.ai_engineering.ai.provider.ModelProviderRegistry;
-import sumit.ai.ai_engineering.ai.provider.ModelProviderRegistry.ModelProviderInfo;
-import sumit.ai.ai_engineering.ai.provider.ModelProviderType;
 
 /**
  * REST controller for all AI capabilities and model providers.
@@ -39,11 +36,9 @@ import sumit.ai.ai_engineering.ai.provider.ModelProviderType;
 public class AIController {
 
     private final AIService aiService;
-    private final ModelProviderRegistry modelProviderRegistry;
 
-    public AIController(AIService aiService, ModelProviderRegistry modelProviderRegistry) {
+    public AIController(AIService aiService) {
         this.aiService = aiService;
-        this.modelProviderRegistry = modelProviderRegistry;
     }
 
     /**
@@ -85,23 +80,5 @@ public class AIController {
     @PostMapping("/summarize")
     public ResponseEntity<SummarizeResponse> summarize(@Valid @RequestBody SummarizeRequest req) throws IOException {
         return ResponseEntity.ok(aiService.summarize(req));
-    }
-
-    /**
-     * List all registered model providers and active status.
-     */
-    @GetMapping("/providers")
-    public ResponseEntity<List<ModelProviderInfo>> getProviders() {
-        return ResponseEntity.ok(modelProviderRegistry.getAllProviders());
-    }
-
-    /**
-     * Dynamically switch active model provider.
-     */
-    @PostMapping("/providers/active")
-    public ResponseEntity<String> switchActiveProvider(@RequestParam("provider") String provider) {
-        ModelProviderType type = ModelProviderType.valueOf(provider.toUpperCase());
-        modelProviderRegistry.setActiveProvider(type);
-        return ResponseEntity.ok("Active model provider switched to: " + type);
     }
 }

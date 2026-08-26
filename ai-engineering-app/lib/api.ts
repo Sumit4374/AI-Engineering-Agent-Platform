@@ -97,13 +97,6 @@ export interface SummarizeResponse {
   keyPoints: string[];
 }
 
-export interface ModelProviderInfo {
-  type: string;
-  name: string;
-  defaultModel: string;
-  active: boolean;
-}
-
 export interface ConversationDTO {
   id: string;
   userId: number;
@@ -346,21 +339,6 @@ export async function summarizeText(
     body: JSON.stringify({ text, type, conversationId }),
   });
   return handleResponse<SummarizeResponse>(res);
-}
-
-export async function getProviders(): Promise<ModelProviderInfo[]> {
-  const res = await fetch(`${BASE_URL}/api/v1/ai/providers`, {
-    headers: authHeaders(),
-  });
-  return handleResponse<ModelProviderInfo[]>(res);
-}
-
-export async function switchProvider(provider: string): Promise<string> {
-  const res = await fetch(
-    `${BASE_URL}/api/v1/ai/providers/active?provider=${encodeURIComponent(provider)}`,
-    { method: "POST", headers: authHeaders() }
-  );
-  return res.text();
 }
 
 // ─── Conversations ───────────────────────────────────────────────────────────

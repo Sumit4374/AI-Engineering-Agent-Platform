@@ -14,6 +14,21 @@ export default function McpInspectorPage() {
   const [isRunning, setIsRunning] = useState(false);
   const [connectionError, setConnectionError] = useState("");
 
+  const buildSamplePayload = (tool: api.McpToolDefinition) => {
+    const schema = tool.inputSchema;
+    if (!schema || !schema.properties) return "{}";
+    const sample: Record<string, unknown> = {};
+    const props = schema.properties as Record<string, { type?: string; description?: string; default?: unknown }>;
+    for (const [key, val] of Object.entries(props)) {
+      if (val.default !== undefined) sample[key] = val.default;
+      else if (val.type === "string") sample[key] = "";
+      else if (val.type === "integer" || val.type === "number") sample[key] = 0;
+      else if (val.type === "boolean") sample[key] = false;
+      else sample[key] = null;
+    }
+    return JSON.stringify(sample, null, 2);
+  };
+
   useEffect(() => {
     const loadData = async () => {
       try {

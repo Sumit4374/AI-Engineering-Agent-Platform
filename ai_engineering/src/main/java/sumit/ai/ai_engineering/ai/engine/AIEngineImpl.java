@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import sumit.ai.ai_engineering.ai.prompt.PromptRegistry;
-import sumit.ai.ai_engineering.ai.provider.ModelProvider;
-import sumit.ai.ai_engineering.ai.provider.ModelProviderRegistry;
 import sumit.ai.ai_engineering.ai.tools.ToolRegistry;
 import sumit.ai.ai_engineering.ai.tools.model.ToolsCategory;
 import sumit.ai.ai_engineering.infrastructure.observability.PlatformMetrics;
@@ -24,40 +22,24 @@ public class AIEngineImpl implements AIEngine {
 
     private static final Logger log = LoggerFactory.getLogger(AIEngineImpl.class);
 
-    private final ModelProviderRegistry modelProviderRegistry;
     private final PromptRegistry promptRegistry;
     private final ToolRegistry toolRegistry;
-    private final ChatClient fallbackChatClient;
+    private final ChatClient chatClient;
     private final ObjectProvider<PlatformMetrics> platformMetricsProvider;
 
     public AIEngineImpl(
-            ModelProviderRegistry modelProviderRegistry,
             PromptRegistry promptRegistry,
             ToolRegistry toolRegistry,
             ChatClient chatClient,
             ObjectProvider<PlatformMetrics> platformMetricsProvider) {
-        this.modelProviderRegistry = modelProviderRegistry;
         this.promptRegistry = promptRegistry;
         this.toolRegistry = toolRegistry;
-        this.fallbackChatClient = chatClient;
+        this.chatClient = chatClient;
         this.platformMetricsProvider = platformMetricsProvider;
     }
 
-    private ChatClient getChatClient() {
-        if (modelProviderRegistry != null) {
-            ModelProvider active = modelProviderRegistry.getActiveProvider();
-            if (active != null && active.getChatClient() != null) {
-                return active.getChatClient();
-            }
-        }
-        return fallbackChatClient;
-    }
-
     private String getActiveProviderName() {
-        if (modelProviderRegistry != null && modelProviderRegistry.getActiveProvider() != null) {
-            return modelProviderRegistry.getActiveProvider().getProviderType().name();
-        }
-        return "DEFAULT";
+        return "OPENAI";
     }
 
     @Override
@@ -68,7 +50,7 @@ public class AIEngineImpl implements AIEngine {
         try {
             String prompt = promptRegistry.loadPrompt(promptType, variables);
             log.debug("Structured generation [conversationId={}, promptType={}]", conversationId, promptType);
-            T result = getChatClient()
+            T result = chatClient
                     .prompt(prompt)
                     .tools(toolRegistry.getTools(tools))
                     .advisors(
@@ -100,7 +82,7 @@ public class AIEngineImpl implements AIEngine {
         try {
             String prompt = promptRegistry.loadPrompt(promptType, variables);
             log.debug("Text generation [conversationId={}, promptType={}]", conversationId, promptType);
-            String result = getChatClient()
+            String result = chatClient
                     .prompt(prompt)
                     .tools(toolRegistry.getTools(tools))
                     .advisors(
@@ -134,7 +116,7 @@ public class AIEngineImpl implements AIEngine {
         String prompt = promptRegistry.loadPrompt(promptType, variables);
         log.debug("SSE streaming started [conversationId={}, promptType={}]", conversationId, promptType);
 
-        return getChatClient()
+        return chatClient
                 .prompt(prompt)
                 .tools(toolRegistry.getTools(tools))
                 .advisors(

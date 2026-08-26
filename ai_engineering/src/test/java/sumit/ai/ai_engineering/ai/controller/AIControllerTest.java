@@ -22,8 +22,6 @@ import sumit.ai.ai_engineering.ai.dto.CodeReviewDTO.CodeReviewRequest;
 import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainRequest;
 import sumit.ai.ai_engineering.ai.dto.ExplainDTO.ExplainResponse;
 import sumit.ai.ai_engineering.ai.dto.SummarizeDTO.SummarizeRequest;
-import sumit.ai.ai_engineering.ai.provider.ModelProviderRegistry;
-import sumit.ai.ai_engineering.ai.provider.ModelProviderRegistry.ModelProviderInfo;
 import sumit.ai.ai_engineering.ai.service.AIService;
 
 /**
@@ -33,13 +31,12 @@ import sumit.ai.ai_engineering.ai.service.AIService;
 class AIControllerTest {
 
     @Mock private AIService aiService;
-    @Mock private ModelProviderRegistry modelProviderRegistry;
 
     private AIController controller;
 
     @BeforeEach
     void setUp() {
-        controller = new AIController(aiService, modelProviderRegistry);
+        controller = new AIController(aiService);
     }
 
     // ---- /chat ----
@@ -90,20 +87,5 @@ class AIControllerTest {
         Flux<String> result = controller.streamChat(new ChatRequest("conv-1", "Hello"));
 
         assertThat(result.collectList().block()).containsExactly("Hello", " world");
-    }
-
-    // ---- /providers ----
-
-    @Test
-    void getProviders_returnsListFromRegistry() {
-        when(modelProviderRegistry.getAllProviders()).thenReturn(List.of(
-                new ModelProviderInfo("NVIDIA_NIM", "NVIDIA NIM", "meta/llama-3.1-70b-instruct", true, true)
-        ));
-
-        ResponseEntity<List<ModelProviderInfo>> resp = controller.getProviders();
-
-        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(resp.getBody()).hasSize(1);
-        assertThat(resp.getBody().get(0).type()).isEqualTo("NVIDIA_NIM");
     }
 }
