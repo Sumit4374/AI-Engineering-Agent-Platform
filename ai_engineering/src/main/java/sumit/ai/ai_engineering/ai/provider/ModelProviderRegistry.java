@@ -19,7 +19,7 @@ public class ModelProviderRegistry {
 
     public ModelProviderRegistry(
             List<ModelProvider> providers,
-            @Value("${ai.provider.active:NVIDIA_NIM}") String configuredActive) {
+            @Value("${ai.provider.active:OPENAI}") String configuredActive) {
         if (providers != null) {
             for (ModelProvider provider : providers) {
                 providerMap.put(provider.getProviderType(), provider);
@@ -46,12 +46,14 @@ public class ModelProviderRegistry {
         // Fallback to first available provider
         for (ModelProvider p : providerMap.values()) {
             if (p.isAvailable()) {
-                log.warn("Active provider [{}] unavailable, falling back to [{}]", activeProviderType, p.getProviderType());
+                log.warn("Active provider [{}] unavailable, falling back to [{}]", activeProviderType,
+                        p.getProviderType());
                 return p;
             }
         }
 
-        // Return current provider even if offline (caller handles offline response gracefully)
+        // Return current provider even if offline (caller handles offline response
+        // gracefully)
         return provider != null ? provider : providerMap.values().stream().findFirst().orElse(null);
     }
 
@@ -74,8 +76,7 @@ public class ModelProviderRegistry {
                         p.getProviderName(),
                         p.getDefaultModel(),
                         p.isAvailable(),
-                        p.getProviderType() == activeProviderType
-                ))
+                        p.getProviderType() == activeProviderType))
                 .toList();
     }
 
@@ -84,6 +85,6 @@ public class ModelProviderRegistry {
             String name,
             String defaultModel,
             boolean available,
-            boolean active
-    ) {}
+            boolean active) {
+    }
 }

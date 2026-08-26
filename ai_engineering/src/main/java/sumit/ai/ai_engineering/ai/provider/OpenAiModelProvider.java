@@ -13,8 +13,8 @@ public class OpenAiModelProvider implements ModelProvider {
 
     public OpenAiModelProvider(
             ChatClient chatClient,
-            @Value("${ai.openai.model:gpt-4o-mini}") String modelName,
-            @Value("${ai.openai.api-key:${OPENAI_API_KEY:}}") String apiKey) {
+            @Value("${spring.ai.openai.chat.model:${ai.openai.model:${CHAT_MODEL:gemini-3.6-flash}}}") String modelName,
+            @Value("${spring.ai.openai.api-key:${ai.openai.api-key:${OPEN_API_KEY:${OPENAI_API_KEY:}}}}") String apiKey) {
         this.chatClient = chatClient;
         this.modelName = modelName;
         this.apiKey = apiKey;
