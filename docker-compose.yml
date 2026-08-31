@@ -10,6 +10,8 @@ services:
     ports:
       - "${SERVER_PORT:-8080}:8080"
     env_file:
+      - path: ./ai_engineering/.env
+        required: false
       - path: .env
         required: false
     environment:
@@ -20,10 +22,10 @@ services:
       - JWT_SECRET=${JWT_SECRET:-your_super_secret_jwt_key_that_is_at_least_32_characters_long_12345}
       - JWT_EXPIRATION_MS=${JWT_EXPIRATION_MS:-86400000}
       - AI_PROVIDER=${AI_PROVIDER:-OPENAI}
-      - OPEN_API_KEY=${OPEN_API_KEY}
-      - OPEN_API_BASE_URL=${OPEN_API_BASE_URL:-https://generativelanguage.googleapis.com/v1beta/openai/}
-      - CHAT_MODEL=${CHAT_MODEL:-gemini-3.6-flash}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPEN_API_KEY=${OPEN_API_KEY:-}
+      - OPEN_API_BASE_URL=${OPEN_API_BASE_URL:-https://openrouter.ai/api/v1}
+      - CHAT_MODEL=${CHAT_MODEL:-qwen/qwen3.8-flash}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://localhost:11434}
       - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3}
       - CHAT_MEMORY_INIT_SCHEMA=${CHAT_MEMORY_INIT_SCHEMA:-never}
